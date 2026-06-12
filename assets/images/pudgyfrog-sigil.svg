@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" role="img" aria-label="Pudgy Frog sigil">
+  <rect width="160" height="160" fill="#05050b"/>
+  <path d="M26 94c0-33 21-58 54-58s54 25 54 58c0 29-22 46-54 46S26 123 26 94Z" fill="#1638ff" stroke="#f8fbff" stroke-width="4"/>
+  <circle cx="56" cy="58" r="20" fill="#71d692" stroke="#f8fbff" stroke-width="4"/>
+  <circle cx="104" cy="58" r="20" fill="#71d692" stroke="#f8fbff" stroke-width="4"/>
+  <circle cx="58" cy="58" r="7" fill="#05050b"/>
+  <circle cx="102" cy="58" r="7" fill="#05050b"/>
+  <path d="M50 100c18 16 42 16 60 0" fill="none" stroke="#f8fbff" stroke-width="5" stroke-linecap="round"/>
+  <path d="M35 123h90" stroke="#ff8bd4" stroke-width="5" stroke-linecap="round"/>
+</svg>

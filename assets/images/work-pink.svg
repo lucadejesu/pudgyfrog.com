@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 210" role="img" aria-label="Pink artwork placeholder">
+  <rect width="320" height="210" fill="#05050b"/>
+  <rect x="12" y="12" width="296" height="186" fill="#2b0825" stroke="#f8fbff" stroke-width="4"/>
+  <path d="M35 54h250M35 94h250M35 134h250M35 174h250" stroke="#1638ff" stroke-width="3"/>
+  <path d="M92 50c52 18 52 88 0 106 54 18 112-5 136-50C202 62 150 34 92 50Z" fill="#ff8bd4"/>
+  <path d="M110 70c18 18 18 52 0 70" fill="none" stroke="#f8fbff" stroke-width="5" stroke-linecap="round"/>
+</svg>

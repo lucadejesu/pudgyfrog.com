@@ -4,83 +4,130 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Pudgy Frog</title>
-    <meta
-      name="description"
-      content="The personal art website of Pudgy Frog."
-    >
+    <meta name="description" content="The personal art website of Pudgy Frog.">
     <link rel="stylesheet" href="styles.css">
   </head>
   <body>
-    <header class="site-header">
-      <a class="site-title" href="/">Pudgy Frog</a>
-      <nav class="site-nav" aria-label="Primary navigation">
-        <a href="#gallery">Gallery</a>
-        <a href="#about">About</a>
-        <a href="#contact">Contact</a>
-      </nav>
-    </header>
+    <div class="stars" aria-hidden="true"></div>
+    <div class="moon" aria-hidden="true"></div>
 
-    <main>
-      <section class="hero">
-        <p class="eyebrow">Personal art archive</p>
-        <h1>A handmade home for drawings, experiments, and little worlds.</h1>
-        <p>
-          This is the beginning of pudgyfrog.com. Add your art to
-          <code>assets/images</code>, then shape this page into your own strange
-          and specific corner of the internet.
-        </p>
-      </section>
+    <div class="site-shell">
+      <header class="masthead">
+        <a class="brand" href="index.html">pudgyfrog</a>
+        <p class="tagline">art, music, animations, and other creative projects</p>
+      </header>
 
-      <section id="gallery" class="section">
-        <h2>Gallery</h2>
-        <div class="gallery-grid">
-          <article class="art-card">
-            <div class="art-placeholder" aria-hidden="true"></div>
-            <h3>First Piece</h3>
-            <p>Replace this card with a favorite artwork.</p>
-          </article>
-          <article class="art-card">
-            <div class="art-placeholder" aria-hidden="true"></div>
-            <h3>Sketchbook</h3>
-            <p>A place for studies, process, and works in progress.</p>
-          </article>
-          <article class="art-card">
-            <div class="art-placeholder" aria-hidden="true"></div>
-            <h3>Archive</h3>
-            <p>Older pieces can live here as the site grows.</p>
-          </article>
-        </div>
-      </section>
+      <nav class="main-nav" aria-label="Main navigation">
+        <a href="index.html" aria-current="page">Home</a>
+        <a href="about.html">About</a>
+        <a href="gallery.html">Animations</a>
+        <a href="diary.html">Blog</a>
+        <a href="thoughts.html">Paintings</a>
+        <a href="guestbook.html">Guestbook</a>
+        <a href="links.html">Links</a>
+        </nav>
 
-      <section id="about" class="section split-section">
-        <div>
-          <h2>About</h2>
+      <main class="layout">
+        <aside class="rail left-rail">
+          <section class="box weather-box">
+            <h2 data-weather-place>near you</h2>
+            <div class="weather-now">
+              <div class="weather-readout">
+                <p class="weather-label">now</p>
+                <p class="weather-temp">72&deg;</p>
+              </div>
+              <img
+                class="weather-icon"
+                data-weather-icon
+                data-condition="clear"
+                src="assets/images/weather/clear.png"
+                alt="Clear weather"
+              >
+            </div>
+            <p class="weather-note" data-weather-note>checking the sky...</p>
+            <p class="weather-wind">wind <span data-weather-wind>-- mph</span></p>
+          </section>
+
+          <section class="box">
+            <h2>Link Me</h2>
+            <div class="button-badge">PUDGYFROG.COM</div>
+            <textarea readonly>&lt;a href="https://pudgyfrog.com"&gt;pudgyfrog&lt;/a&gt;</textarea>
+          </section>
+        </aside>
+
+        <section class="box feature">
+          <h1>welcome to pudgyfrog's corner of the web</h1>
           <p>
-            Write a short note about who you are, what you make, and what people
-            can find here.
+            Hello! Welcome to my indie website, a place for me to share my
+            pixel art, animations, thoughts, music, and any other creative
+            projects that I'm currently working on. You can find my animated
+            pixel art on instagram under the username "@pudgyfr0g"
           </p>
-        </div>
-        <div>
-          <h2>Now</h2>
-          <p>
-            Use this spot for current projects, upcoming drops, shows, or
-            experiments.
-          </p>
-        </div>
-      </section>
 
-      <section id="contact" class="section">
-        <h2>Contact</h2>
-        <p>
-          Add an email address, shop link, Instagram, newsletter, or whatever
-          feels right for your art practice.
-        </p>
-      </section>
-    </main>
+          <div class="postcards">
+            <a href="gallery.html">
+              <span class="empty-preview" aria-hidden="true"></span>
+              Animations
+            </a>
+            <a href="diary.html">
+              <span class="empty-preview" aria-hidden="true"></span>
+              Blog
+            </a>
+            <a href="links.html">
+              <span class="empty-preview" aria-hidden="true"></span>
+              Links
+            </a>
+          </div>
 
-    <footer class="site-footer">
-      <p>&copy; <span id="year"></span> Pudgy Frog.</p>
-    </footer>
+          <div class="grass" aria-hidden="true"></div>
+        </section>
+
+        <aside class="rail right-rail">
+          <section class="box status-box">
+            <h2>Status</h2>
+            <dl>
+              <div>
+                <dt>Mood</dt>
+                <dd>locked in</dd>
+              </div>
+              <div>
+                <dt>Time</dt>
+                <dd><span id="clock">--:--</span></dd>
+              </div>
+            </dl>
+          </section>
+
+          <section class="box">
+            <h2>Notice</h2>
+            <p>This site is under construction.</p>
+          </section>
+        </aside>
+
+        <section class="ticker" aria-label="Site motto">
+          <span>you cant have yesterday, how about tomorrow instead? in the mean time, enjoy today.</span>
+        </section>
+
+        <section class="box moon-photo-box">
+          <img src="assets/images/moon-landscape.jpg" alt="Full moon over a dusky pine landscape">
+        </section>
+
+        <section class="box update-log">
+          <h2>Update Log</h2>
+          <ul>
+            <li><time datetime="2026-06-12">06.12.26</time> added weather widget.</li>
+            <li><time datetime="2026-06-12">06.12.26</time> added header images and two box images.</li>
+          </ul>
+        </section>
+
+        <section class="box playlist">
+          <img src="assets/images/header-left.png" alt="Pixel art house with fence and lamps">
+        </section>
+      </main>
+
+      <footer class="site-footer">
+        <p>follow @pudgyfr0g on instagram</p>
+      </footer>
+    </div>
 
     <script src="script.js"></script>
   </body>
