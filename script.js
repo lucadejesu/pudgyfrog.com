@@ -216,16 +216,25 @@ function initWeather() {
 initWeather();
 
 const hoverGifs = document.querySelectorAll("[data-gif-src][data-still-src]");
+const animationStage = document.querySelector("[data-animation-stage]");
 
 hoverGifs.forEach((image) => {
   image.tabIndex = 0;
 
   const playGif = () => {
     image.src = image.dataset.gifSrc;
+    if (animationStage) {
+      animationStage.src = image.dataset.gifSrc;
+      animationStage.alt = image.alt;
+    }
   };
 
   const pauseGif = () => {
     image.src = image.dataset.stillSrc;
+    if (animationStage) {
+      animationStage.src = image.dataset.stillSrc;
+      animationStage.alt = image.alt;
+    }
   };
 
   image.addEventListener("mouseenter", playGif);

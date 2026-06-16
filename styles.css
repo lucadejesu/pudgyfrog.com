@@ -20,6 +20,7 @@
   --weather-text: #f8fbff;
   --weather-title: linear-gradient(90deg, #241831, #120c1a);
   --masthead-left-bg: #05040a;
+  --brand-color: #ffffff;
   --font-ui: "Segoe UI Variable Text", "Segoe UI", Tahoma, Geneva, sans-serif;
   --font-display: "Segoe UI Variable Display", "Segoe UI", Tahoma, Geneva, sans-serif;
 }
@@ -44,6 +45,7 @@ html[data-theme="light"] {
   --weather-text: #18130f;
   --weather-title: linear-gradient(90deg, #ffffff, #fff4df);
   --masthead-left-bg: #ffffff;
+  --brand-color: #18130f;
 }
 
 html[data-theme="dark"] {
@@ -99,7 +101,7 @@ textarea {
 
 .site-shell {
   width: min(920px, calc(100% - 2rem));
-  margin: 3rem auto 5rem;
+  margin: 0 auto 5rem;
   border: 2px solid var(--line);
   background: var(--shell-bg);
   box-shadow: 0 0 0 4px var(--blue), 0 0 24px var(--shadow);
@@ -114,7 +116,7 @@ textarea {
   gap: 0.55rem;
   overflow: hidden;
   border-bottom: 2px solid var(--line);
-  background: #61b7b0;
+  background: var(--masthead-left-bg);
   text-align: center;
 }
 
@@ -132,14 +134,7 @@ textarea {
 }
 
 .masthead .brand::before {
-  content: "";
-  position: absolute;
-  inset: -0.35rem -1.2rem;
-  z-index: -1;
-  border: 2px solid rgba(232, 234, 255, 0.88);
-  background: #b09ac6;
-  box-shadow: 0 0 18px rgba(176, 154, 198, 0.45);
-  pointer-events: none;
+  content: none;
 }
 
 .masthead::before {
@@ -155,7 +150,7 @@ textarea {
 .masthead::after {
   left: auto;
   width: 58%;
-  background-color: #61b7b0;
+  background-color: var(--masthead-left-bg);
   background-image: none;
   background-position: right center;
   -webkit-mask-image: none;
@@ -183,13 +178,13 @@ html[data-theme="dark"] .masthead::after {
 .brand {
   position: relative;
   z-index: 2;
-  color: var(--blue);
+  color: var(--brand-color);
   font-family: var(--font-display);
   font-size: clamp(2.45rem, 7vw, 4.4rem);
   font-weight: 500;
   line-height: 1.05;
   text-decoration: none;
-  text-shadow: 0 0 12px rgba(22, 56, 255, 0.65);
+  text-shadow: none;
 }
 
 .compact .brand {
@@ -523,9 +518,9 @@ textarea {
 .feature h1 {
   border-bottom: 0;
   background: transparent;
-  padding: 1.35rem 1.55rem 0.45rem;
+  padding: 0;
   color: var(--ink);
-  font-size: clamp(2rem, 5.8vw, 4.15rem);
+  font-size: clamp(1.9rem, 3.9vw, 3.1rem);
   text-align: left;
   text-shadow: 0 2px 0 var(--shadow);
 }
@@ -538,18 +533,24 @@ textarea {
 
 .feature-intro {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(190px, 240px);
-  gap: 1rem;
+  grid-template-columns: minmax(0, 1fr) minmax(210px, 270px);
+  gap: 1.1rem;
   align-items: start;
-  padding: 0.15rem 1.15rem 1rem 1.55rem;
+  padding: 1.15rem 1.15rem 2.6rem;
+}
+
+.feature-text {
+  display: grid;
+  gap: 0.85rem;
+  align-content: start;
 }
 
 .feature-copy {
-  max-width: 560px;
+  max-width: 610px;
   margin: 0;
-  padding: 0.35rem 0 0;
-  font-size: 1.02rem;
-  line-height: 1.6;
+  padding: 0;
+  font-size: clamp(1rem, 1.85vw, 1.35rem);
+  line-height: 1.55;
   text-align: left;
 }
 
@@ -578,7 +579,7 @@ textarea {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0.8rem;
-  padding: 0.35rem 1.15rem 1.15rem 1.55rem;
+  padding: 0 1.15rem 1.15rem;
 }
 
 .postcards a {
@@ -738,6 +739,7 @@ input[type="radio"] {
 
 .animation-grid {
   grid-template-columns: repeat(3, minmax(0, 1fr));
+  padding-top: 0.75rem;
 }
 
 .painting-grid {
@@ -860,6 +862,20 @@ input[type="radio"] {
   width: 100%;
 }
 
+.animation-stage {
+  margin: 1rem 1.15rem 0;
+  border: 2px solid var(--line);
+  background: var(--panel);
+}
+
+.animation-stage img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+
 .animation-grid article {
   border: 2px solid var(--line);
   background:
@@ -870,7 +886,7 @@ input[type="radio"] {
 .animation-grid img {
   aspect-ratio: 16 / 9;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
   image-rendering: pixelated;
 }
 
@@ -905,7 +921,7 @@ input[type="radio"] {
 @media (max-width: 860px) {
   .site-shell {
     width: calc(100% - 1rem);
-    margin-top: 5.5rem;
+    margin-top: 0;
   }
 
   .layout,
@@ -931,15 +947,6 @@ input[type="radio"] {
     order: 1;
   }
 
-  .feature-intro {
-    grid-template-columns: 1fr;
-    padding-right: 1.15rem;
-  }
-
-  .feature h1 {
-    text-align: center;
-  }
-
   .weather-box {
     grid-column: span 1;
     order: 2;
@@ -963,6 +970,10 @@ input[type="radio"] {
     grid-template-columns: 1fr;
   }
 
+  .animation-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
   .moon {
     width: 3rem;
     height: 3rem;
@@ -978,6 +989,15 @@ input[type="radio"] {
 @media (max-width: 560px) {
   .layout {
     grid-template-columns: 1fr;
+  }
+
+  .animation-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .feature-intro {
+    grid-template-columns: 1fr;
+    padding-right: 1.15rem;
   }
 
   .weather-box,
