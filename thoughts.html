@@ -26,15 +26,38 @@
       </nav>
       <main class="box page-panel">
         <h1>Paintings</h1>
-        <div class="note-board">
+        <div class="painting-grid">
           <article>
-            <h2>micro blog</h2>
-            <p>I am becoming a jack of all trades</p>
+            <img src="assets/images/paintings/sunset-landscape.jpeg" alt="Colorful sunset landscape painting">
           </article>
+          <article>
+            <img src="assets/images/paintings/moon-cabin.jpeg" alt="Blue moonlit cabin painting">
+          </article>
+          <article>
+            <img src="assets/images/paintings/purple-harbor.jpeg" alt="Purple harbor night painting">
+          </article>
+          <article aria-label="Painting placeholder"></article>
+          <article aria-label="Painting placeholder"></article>
+          <article aria-label="Painting placeholder"></article>
         </div>
+        <section class="comments-section" aria-labelledby="comments-title">
+          <h2 id="comments-title">comments</h2>
+          <form class="comment-form" data-comment-form>
+            <label>
+              name
+              <input type="text" name="name" placeholder="name" autocomplete="name" required>
+            </label>
+            <label>
+              comment
+              <textarea name="comment" placeholder="comment" required></textarea>
+            </label>
+            <button type="submit">post</button>
+          </form>
+          <div class="comment-list" data-comment-list aria-live="polite"></div>
+        </section>
       </main>
       <footer class="site-footer"><p>follow @pudgyfr0g on instagram</p></footer>
     </div>
-    <script src="script.js"></script>
+    <script src="script.js?v=paintings-comments"></script>
   </body>
 </html>

@@ -246,23 +246,54 @@ textarea {
 
 .weather-box {
   overflow: hidden;
-  border-color: rgba(232, 234, 255, 0.9);
-  background:
-    linear-gradient(115deg, rgba(154, 145, 178, 0.96), rgba(176, 154, 198, 0.92) 50%, rgba(87, 111, 155, 0.96));
+  border-width: 2px;
+  border-style: solid;
+  border-color: #ffffff #6f6b79 #6f6b79 #ffffff;
+  background: #d7d1e8;
   color: #07152b;
   font-family: "Segoe UI", Tahoma, Geneva, sans-serif;
   text-align: left;
+  box-shadow:
+    inset 1px 1px 0 #f8f0ff,
+    inset -1px -1px 0 #534b5c,
+    3px 3px 0 rgba(0, 0, 0, 0.28);
 }
 
-.weather-box h2 {
-  border-bottom: 0;
-  background:
-    linear-gradient(90deg, rgba(87, 111, 155, 0.76), rgba(190, 159, 205, 0.9));
+.weather-titlebar {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  min-height: 22px;
+  padding: 0.15rem 0.18rem 0.15rem 0.35rem;
+  border-bottom: 2px solid #111;
+  background: linear-gradient(90deg, #f4c8f1, #b09ac6);
   color: #07152b;
-  font-size: 1.18rem;
+  font-size: 0.78rem;
+  font-weight: 500;
+}
+
+.weather-titlebar img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
+.weather-titlebar .window-controls {
+  display: block;
+  width: 54px;
+  height: 18px;
+  margin-left: auto;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+
+.weather-place {
+  margin: 0;
+  padding: 0.55rem 0.75rem 0;
+  color: #07152b;
+  font-size: 0.8rem;
   font-weight: 800;
   text-align: right;
-  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.65);
 }
 
 .weather-icon {
@@ -279,7 +310,7 @@ textarea {
   grid-template-columns: minmax(0, 1fr) 86px;
   align-items: center;
   gap: 0.45rem;
-  padding: 0.7rem 0.75rem 0.2rem;
+  padding: 0.35rem 0.75rem 0.2rem;
 }
 
 .weather-readout {
@@ -345,6 +376,11 @@ button,
   font-size: 0.75rem;
   font-weight: 700;
   text-align: center;
+}
+
+.instagram-button {
+  display: block;
+  text-decoration: none;
 }
 
 textarea,
@@ -490,7 +526,7 @@ input[type="radio"] {
   height: 100%;
   min-height: 136px;
   object-fit: contain;
-  object-position: center;
+  object-position: center bottom;
   border: 2px solid var(--line);
   background: #05050b;
   image-rendering: pixelated;
@@ -525,6 +561,7 @@ input[type="radio"] {
 
 .gallery-grid,
 .note-board,
+.painting-grid,
 .link-grid {
   display: grid;
   gap: 1rem;
@@ -535,10 +572,113 @@ input[type="radio"] {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
+.painting-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
 .gallery-grid article,
 .note-board article {
   border: 1px solid var(--line);
   background: var(--panel-soft);
+}
+
+.painting-grid article {
+  aspect-ratio: 4 / 3;
+  border: 2px solid var(--line);
+  background:
+    linear-gradient(180deg, rgba(154, 145, 178, 0.18), rgba(87, 111, 155, 0.16)),
+    var(--panel);
+}
+
+.painting-grid img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.comments-section {
+  margin: 0 1.15rem 1.15rem;
+  border: 2px solid var(--line);
+  background: var(--panel);
+}
+
+.comments-section h2 {
+  margin: 0;
+  padding: 0.55rem 0.85rem;
+  border-bottom: 2px solid var(--line);
+  background: var(--sky-gradient);
+  color: var(--gradient-text);
+  font-size: 1.35rem;
+  text-align: center;
+  text-transform: lowercase;
+}
+
+.comment-form {
+  display: grid;
+  gap: 0.85rem;
+  padding: 1rem;
+}
+
+.comment-form label {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.comment-form input,
+.comment-form textarea {
+  display: block;
+  margin-top: 0.35rem;
+}
+
+.comment-form textarea {
+  min-height: 110px;
+}
+
+.comment-form button {
+  justify-self: start;
+}
+
+.comment-list {
+  display: grid;
+  gap: 0.75rem;
+  padding: 0 1rem 1rem;
+}
+
+.comment-empty {
+  margin: 0;
+  border: 1px dashed var(--muted);
+  padding: 0.75rem;
+  color: var(--muted);
+  text-align: center;
+}
+
+.comment-entry {
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.comment-entry header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.55rem 0.75rem;
+  background: var(--sky-gradient);
+  color: var(--gradient-text);
+  font-weight: 800;
+}
+
+.comment-entry time {
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.comment-entry p {
+  margin: 0;
+  padding: 0.75rem;
+  color: var(--ink);
+  white-space: pre-wrap;
 }
 
 .gallery-grid article:empty {
@@ -583,16 +723,52 @@ input[type="radio"] {
     grid-template-columns: 1fr;
   }
 
+  .layout {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .layout > * {
+    order: 6;
+  }
+
   .left-rail {
-    order: 2;
+    display: contents;
   }
 
   .right-rail {
-    order: 3;
+    display: contents;
   }
 
   .feature {
+    grid-column: 1 / -1;
     order: 1;
+  }
+
+  .weather-box {
+    grid-column: span 1;
+    order: 2;
+  }
+
+  .status-box {
+    grid-column: span 1;
+    order: 3;
+  }
+
+  .right-rail .box:not(.status-box) {
+    grid-column: span 1;
+    order: 4;
+  }
+
+  .left-rail .box:not(.weather-box) {
+    grid-column: span 1;
+    order: 5;
+  }
+
+  .ticker,
+  .moon-photo-box,
+  .update-log,
+  .playlist {
+    grid-column: 1 / -1;
   }
 
   .postcards,
@@ -610,5 +786,18 @@ input[type="radio"] {
     width: 3rem;
     height: 3rem;
     left: 1rem;
+  }
+}
+
+@media (max-width: 560px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .weather-box,
+  .status-box,
+  .right-rail .box:not(.status-box),
+  .left-rail .box:not(.weather-box) {
+    grid-column: 1;
   }
 }
