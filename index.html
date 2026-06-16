@@ -10,7 +10,6 @@
   <body>
     <div class="stars" aria-hidden="true"></div>
     <div class="moon" aria-hidden="true"></div>
-
     <div class="site-shell">
       <header class="masthead">
         <a class="brand" href="index.html">pudgyfrog</a>
@@ -26,6 +25,16 @@
         <a href="guestbook.html">Guestbook</a>
         <a href="links.html">Links</a>
         </nav>
+
+      <div class="theme-toggle-bar">
+        <label class="theme-toggle">
+          <input type="checkbox" data-theme-toggle>
+          <span class="theme-toggle-track" aria-hidden="true">
+            <span class="theme-toggle-thumb"></span>
+          </span>
+          <span data-theme-label>dark mode</span>
+        </label>
+      </div>
 
       <main class="layout">
         <aside class="rail left-rail">
@@ -61,56 +70,67 @@
           <section class="box">
             <h2>Instagram</h2>
             <a class="button-badge instagram-button" href="https://www.instagram.com/pudgyfr0g/">@pudgyfr0g</a>
+            <div class="side-picture-frame">
+              <img src="assets/images/header-right.png" alt="Pixel art fishing dock scene">
+            </div>
           </section>
         </aside>
 
         <section class="box feature">
           <h1>welcome to pudgyfrog's corner of the web</h1>
-          <p>
-            Hello! Welcome to my indie website, a place for me to share my
-            pixel art, animations, thoughts, music, and any other creative
-            projects that I'm currently working on. You can find my animated
-            pixel art on instagram under the username "@pudgyfr0g"
-          </p>
+          <div class="feature-intro">
+            <p class="feature-copy">
+              Hello! Welcome to my indie website, a place for me to share my
+              pixel art, animations, thoughts, music, and any other creative
+              projects that I'm currently working on. You can find my animated
+              pixel art on instagram under the username "@pudgyfr0g"
+            </p>
+
+            <div class="feature-widgets">
+              <section class="box status-box">
+                <h2>Status</h2>
+                <dl>
+                  <div>
+                    <dt>Mood</dt>
+                    <dd>locked in</dd>
+                  </div>
+                  <div>
+                    <dt>Time</dt>
+                    <dd><span id="clock">--:--</span></dd>
+                  </div>
+                </dl>
+              </section>
+
+              <section class="box">
+                <h2>Notice</h2>
+                <p>This site is under construction.</p>
+              </section>
+            </div>
+          </div>
 
           <div class="postcards">
-            <a href="gallery.html">
-              <span class="empty-preview" aria-hidden="true"></span>
-              Animations
+            <a href="thoughts.html">
+              <span
+                class="empty-preview image-preview"
+                style="background-image: url('assets/images/paintings/sunset-landscape.jpeg');"
+                aria-hidden="true"
+              ></span>
+              Paintings
             </a>
             <a href="diary.html">
-              <span class="empty-preview" aria-hidden="true"></span>
-              Blog
+              <span
+                class="empty-preview image-preview"
+                style="background-image: url('assets/images/animations/stills/move-forward.png');"
+                aria-hidden="true"
+              ></span>
+              Animations
             </a>
             <a href="links.html">
               <span class="empty-preview" aria-hidden="true"></span>
               Links
             </a>
           </div>
-
-          <div class="grass" aria-hidden="true"></div>
         </section>
-
-        <aside class="rail right-rail">
-          <section class="box status-box">
-            <h2>Status</h2>
-            <dl>
-              <div>
-                <dt>Mood</dt>
-                <dd>locked in</dd>
-              </div>
-              <div>
-                <dt>Time</dt>
-                <dd><span id="clock">--:--</span></dd>
-              </div>
-            </dl>
-          </section>
-
-          <section class="box">
-            <h2>Notice</h2>
-            <p>This site is under construction.</p>
-          </section>
-        </aside>
 
         <section class="ticker" aria-label="Site motto">
           <span>you cant have yesterday, how about tomorrow instead? in the mean time, enjoy today.</span>
@@ -138,6 +158,6 @@
       </footer>
     </div>
 
-    <script src="script.js"></script>
+    <script src="script.js?v=dark-header-gif"></script>
   </body>
 </html>

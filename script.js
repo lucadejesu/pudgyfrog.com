@@ -5,6 +5,32 @@ const weatherTemp = document.querySelector(".weather-temp");
 const weatherNote = document.querySelector("[data-weather-note]");
 const weatherWind = document.querySelector("[data-weather-wind]");
 const weatherPlace = document.querySelector("[data-weather-place]");
+const themeToggle = document.querySelector("[data-theme-toggle]");
+const themeLabel = document.querySelector("[data-theme-label]");
+const themeStorageKey = "pudgyfrog-theme";
+
+function applyTheme(theme) {
+  const activeTheme = theme === "light" ? "light" : "dark";
+  document.documentElement.dataset.theme = activeTheme;
+
+  if (themeToggle) {
+    themeToggle.checked = activeTheme === "light";
+  }
+
+  if (themeLabel) {
+    themeLabel.textContent = `${activeTheme} mode`;
+  }
+}
+
+applyTheme(localStorage.getItem(themeStorageKey) || "dark");
+
+if (themeToggle) {
+  themeToggle.addEventListener("change", () => {
+    const theme = themeToggle.checked ? "light" : "dark";
+    localStorage.setItem(themeStorageKey, theme);
+    applyTheme(theme);
+  });
+}
 
 const weatherIcons = {
   "partly-cloudy": "assets/images/weather/partly-cloudy.png",
@@ -76,7 +102,7 @@ function weatherFromCode(code, isDay, windSpeed) {
     return {
       condition: "cloudy-overcast",
       label: "Cloudy weather",
-      note: "cloudy and overcast",
+      note: "overcast",
     };
   }
 
@@ -188,6 +214,28 @@ function initWeather() {
 }
 
 initWeather();
+
+const hoverGifs = document.querySelectorAll("[data-gif-src][data-still-src]");
+
+hoverGifs.forEach((image) => {
+  image.tabIndex = 0;
+
+  const playGif = () => {
+    image.src = image.dataset.gifSrc;
+  };
+
+  const pauseGif = () => {
+    image.src = image.dataset.stillSrc;
+  };
+
+  image.addEventListener("mouseenter", playGif);
+  image.addEventListener("mouseover", playGif);
+  image.addEventListener("pointerenter", playGif);
+  image.addEventListener("focus", playGif);
+  image.addEventListener("mouseleave", pauseGif);
+  image.addEventListener("pointerleave", pauseGif);
+  image.addEventListener("blur", pauseGif);
+});
 
 const commentForm = document.querySelector("[data-comment-form]");
 const commentList = document.querySelector("[data-comment-list]");
