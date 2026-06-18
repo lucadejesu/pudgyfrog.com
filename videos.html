@@ -27,16 +27,31 @@
       <main class="box page-panel video-page">
         <h1>Videos</h1>
         <div class="youtube-player">
+          <div class="youtube-player-fallback">
+            <p>pudgyfrog animations youtube channel</p>
+            <a
+              href="https://www.youtube.com/playlist?list=UUi6ktpaPanNI49-wdJ0yzeg"
+              target="_blank"
+              rel="noopener"
+            >
+              open on youtube
+            </a>
+          </div>
           <iframe
-            src="https://www.youtube.com/embed/videoseries?list=UUi6ktpaPanNI49-wdJ0yzeg"
+            data-youtube-playlist="UUi6ktpaPanNI49-wdJ0yzeg"
             title="Pudgyfrog YouTube videos"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             referrerpolicy="origin"
             allowfullscreen
           ></iframe>
         </div>
-        <a class="youtube-channel-link" href="https://www.youtube.com/@pudgyfrog-animations">
-          view channel on youtube
+        <a
+          class="youtube-channel-link"
+          href="https://www.youtube.com/playlist?list=UUi6ktpaPanNI49-wdJ0yzeg"
+          target="_blank"
+          rel="noopener"
+        >
+          player not loading? view videos on youtube
         </a>
       </main>
       <footer class="site-footer"><p>follow @pudgyfr0g on instagram</p></footer>

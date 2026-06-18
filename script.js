@@ -11,6 +11,7 @@ const weatherPlace = document.querySelector("[data-weather-place]");
 const themeToggle = document.querySelector("[data-theme-toggle]");
 const themeLabel = document.querySelector("[data-theme-label]");
 const themeStorageKey = "pudgyfrog-theme";
+const youtubePlayer = document.querySelector("[data-youtube-playlist]");
 
 function applyTheme(theme) {
   const activeTheme = theme === "light" ? "light" : "dark";
@@ -234,6 +235,43 @@ function initWeather() {
 }
 
 initWeather();
+
+function initYoutubePlayer() {
+  if (!youtubePlayer) return;
+
+  const playlistId = youtubePlayer.dataset.youtubePlaylist;
+  const isWebPage = ["http:", "https:"].includes(window.location.protocol);
+
+  if (!playlistId || !isWebPage) {
+    youtubePlayer.hidden = true;
+    return;
+  }
+
+  const playerUrl = new URL("https://www.youtube.com/embed");
+  playerUrl.searchParams.set("listType", "playlist");
+  playerUrl.searchParams.set("list", playlistId);
+  playerUrl.searchParams.set("origin", window.location.origin);
+  playerUrl.searchParams.set("widget_referrer", window.location.href);
+  playerUrl.searchParams.set("enablejsapi", "1");
+  youtubePlayer.src = playerUrl.toString();
+
+  window.onYouTubeIframeAPIReady = () => {
+    new window.YT.Player(youtubePlayer, {
+      events: {
+        onReady() {
+          youtubePlayer.closest(".youtube-player")?.classList.add("is-ready");
+        },
+      },
+    });
+  };
+
+  const apiScript = document.createElement("script");
+  apiScript.src = "https://www.youtube.com/iframe_api";
+  apiScript.async = true;
+  document.head.append(apiScript);
+}
+
+initYoutubePlayer();
 
 const hoverGifs = document.querySelectorAll("[data-gif-src][data-still-src]");
 const animationStage = document.querySelector("[data-animation-stage]");
