@@ -4,6 +4,9 @@ const weatherIcon = document.querySelector("[data-weather-icon]");
 const weatherTemp = document.querySelector(".weather-temp");
 const weatherNote = document.querySelector("[data-weather-note]");
 const weatherWind = document.querySelector("[data-weather-wind]");
+const weatherRain = document.querySelector("[data-weather-rain]");
+const weatherHumidity = document.querySelector("[data-weather-humidity]");
+const weatherUv = document.querySelector("[data-weather-uv]");
 const weatherPlace = document.querySelector("[data-weather-place]");
 const themeToggle = document.querySelector("[data-theme-toggle]");
 const themeLabel = document.querySelector("[data-theme-label]");
@@ -73,12 +76,13 @@ function setWeatherIcon(condition, label) {
   weatherIcon.alt = label;
 }
 
+// turns the weather service numbers into the icons and words i use on the site
 function weatherFromCode(code, isDay, windSpeed) {
   if (windSpeed >= 18) {
     return {
       condition: "windy-night",
       label: "Windy weather",
-      note: isDay ? "windy skies" : "windy night",
+      note: "windy",
     };
   }
 
@@ -86,7 +90,7 @@ function weatherFromCode(code, isDay, windSpeed) {
     return {
       condition: isDay ? "clear" : "cloudy-night",
       label: isDay ? "Clear weather" : "Clear night weather",
-      note: isDay ? "clear skies" : "clear night",
+      note: "clear skies",
     };
   }
 
@@ -110,7 +114,7 @@ function weatherFromCode(code, isDay, windSpeed) {
     return {
       condition: isDay ? "fog-day" : "haze-night",
       label: "Foggy weather",
-      note: isDay ? "fog during the day" : "hazy night",
+      note: isDay ? "fog" : "hazy night",
     };
   }
 
@@ -149,7 +153,10 @@ async function loadWeather(latitude, longitude) {
   const params = new URLSearchParams({
     latitude,
     longitude,
-    current: "temperature_2m,weather_code,is_day,wind_speed_10m",
+    current:
+      "temperature_2m,relative_humidity_2m,weather_code,is_day,wind_speed_10m,uv_index",
+    hourly: "precipitation_probability",
+    forecast_hours: "2",
     temperature_unit: "fahrenheit",
     wind_speed_unit: "mph",
     timezone: "auto",
@@ -164,6 +171,13 @@ async function loadWeather(latitude, longitude) {
   const current = data.current;
   const temperature = Math.round(current.temperature_2m);
   const windSpeed = Math.round(current.wind_speed_10m);
+  const humidity = Math.round(current.relative_humidity_2m);
+  const uvIndex = Number(current.uv_index).toFixed(1);
+  const rainChance = Math.round(
+    data.hourly?.precipitation_probability?.[1] ??
+      data.hourly?.precipitation_probability?.[0] ??
+      0,
+  );
   const weather = weatherFromCode(
     current.weather_code,
     current.is_day === 1,
@@ -173,7 +187,10 @@ async function loadWeather(latitude, longitude) {
   if (weatherTemp) weatherTemp.textContent = `${temperature}\u00b0`;
   if (weatherNote) weatherNote.textContent = weather.note;
   if (weatherWind) weatherWind.textContent = `${windSpeed} mph`;
-  if (weatherPlace) weatherPlace.textContent = "near you";
+  if (weatherRain) weatherRain.textContent = `${rainChance}%`;
+  if (weatherHumidity) weatherHumidity.textContent = `${humidity}%`;
+  if (weatherUv) weatherUv.textContent = uvIndex;
+  if (weatherPlace) weatherPlace.textContent = "currently";
   setWeatherIcon(weather.condition, weather.label);
 }
 
@@ -181,6 +198,9 @@ function useFallbackWeather(message) {
   if (weatherTemp) weatherTemp.textContent = "--\u00b0";
   if (weatherNote) weatherNote.textContent = message;
   if (weatherWind) weatherWind.textContent = "-- mph";
+  if (weatherRain) weatherRain.textContent = "--%";
+  if (weatherHumidity) weatherHumidity.textContent = "--%";
+  if (weatherUv) weatherUv.textContent = "--";
   if (weatherPlace) weatherPlace.textContent = "location off";
   setWeatherIcon("clear", "Clear weather");
 }
@@ -217,24 +237,47 @@ initWeather();
 
 const hoverGifs = document.querySelectorAll("[data-gif-src][data-still-src]");
 const animationStage = document.querySelector("[data-animation-stage]");
+const animationStageFrame = document.querySelector("[data-animation-stage-frame]");
+const animationGrid = document.querySelector(".animation-grid");
+
+// hides the smaller animations while one of them takes over the main box
+function showAnimationStage(image) {
+  if (!animationStage || !animationStageFrame || !animationGrid) return;
+
+  animationStage.src = image.dataset.gifSrc;
+  animationStage.alt = image.alt;
+  animationStage.classList.toggle(
+    "animation-stage-contained",
+    image.dataset.stageFit === "contain",
+  );
+  animationGrid.hidden = true;
+  animationStageFrame.hidden = false;
+}
+
+function hideAnimationStage() {
+  if (!animationStageFrame || !animationGrid) return;
+
+  animationStageFrame.hidden = true;
+  animationGrid.hidden = false;
+}
 
 hoverGifs.forEach((image) => {
   image.tabIndex = 0;
 
+  if (animationStage && animationStageFrame && animationGrid) {
+    image.addEventListener("mouseenter", () => showAnimationStage(image));
+    image.addEventListener("pointerenter", () => showAnimationStage(image));
+    image.addEventListener("focus", () => showAnimationStage(image));
+    image.addEventListener("click", () => showAnimationStage(image));
+    return;
+  }
+
   const playGif = () => {
     image.src = image.dataset.gifSrc;
-    if (animationStage) {
-      animationStage.src = image.dataset.gifSrc;
-      animationStage.alt = image.alt;
-    }
   };
 
   const pauseGif = () => {
     image.src = image.dataset.stillSrc;
-    if (animationStage) {
-      animationStage.src = image.dataset.stillSrc;
-      animationStage.alt = image.alt;
-    }
   };
 
   image.addEventListener("mouseenter", playGif);
@@ -246,10 +289,55 @@ hoverGifs.forEach((image) => {
   image.addEventListener("blur", pauseGif);
 });
 
+if (animationStageFrame) {
+  animationStageFrame.addEventListener("mouseleave", hideAnimationStage);
+  animationStageFrame.addEventListener("pointerleave", hideAnimationStage);
+  animationStageFrame.addEventListener("blur", hideAnimationStage);
+  animationStageFrame.addEventListener("click", hideAnimationStage);
+}
+
+const hoverPaintings = document.querySelectorAll(".hover-painting");
+const paintingStage = document.querySelector("[data-painting-stage]");
+const paintingStageFrame = document.querySelector("[data-painting-stage-frame]");
+const paintingGrid = document.querySelector(".painting-grid");
+
+// lets one painting take over the main box until the mouse moves away
+function showPaintingStage(image) {
+  if (!paintingStage || !paintingStageFrame || !paintingGrid) return;
+
+  paintingStage.src = image.src;
+  paintingStage.alt = image.alt;
+  paintingGrid.hidden = true;
+  paintingStageFrame.hidden = false;
+}
+
+function hidePaintingStage() {
+  if (!paintingStageFrame || !paintingGrid) return;
+
+  paintingStageFrame.hidden = true;
+  paintingGrid.hidden = false;
+}
+
+hoverPaintings.forEach((image) => {
+  image.tabIndex = 0;
+  image.addEventListener("mouseenter", () => showPaintingStage(image));
+  image.addEventListener("pointerenter", () => showPaintingStage(image));
+  image.addEventListener("focus", () => showPaintingStage(image));
+  image.addEventListener("click", () => showPaintingStage(image));
+});
+
+if (paintingStageFrame) {
+  paintingStageFrame.addEventListener("mouseleave", hidePaintingStage);
+  paintingStageFrame.addEventListener("pointerleave", hidePaintingStage);
+  paintingStageFrame.addEventListener("blur", hidePaintingStage);
+  paintingStageFrame.addEventListener("click", hidePaintingStage);
+}
+
 const commentForm = document.querySelector("[data-comment-form]");
 const commentList = document.querySelector("[data-comment-list]");
 const commentsStorageKey = "pudgyfrog-painting-comments";
 
+// keeps painting comments saved in this browser for now
 function readComments() {
   try {
     return JSON.parse(localStorage.getItem(commentsStorageKey)) || [];

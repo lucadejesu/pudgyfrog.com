@@ -3,8 +3,8 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Guestbook | Pudgy Frog</title>
-    <meta name="description" content="Guestbook for Pudgy Frog.">
+    <title>Videos | Pudgy Frog</title>
+    <meta name="description" content="Videos from Pudgy Frog.">
     <link rel="stylesheet" href="styles.css">
   </head>
   <body>
@@ -21,23 +21,23 @@
         <a href="gallery.html">Animations</a>
         <a href="diary.html">Blog</a>
         <a href="thoughts.html">Paintings</a>
-        <a href="guestbook.html" aria-current="page">Guestbook</a>
+        <a href="videos.html" aria-current="page">Videos</a>
         <a href="links.html">Links</a>
       </nav>
-      <main class="page-grid">
-        <article class="box page-panel">
-          <h1>Guestbook</h1>
-          <p>this is a placeholder for now, doesn't currently work</p>
-          <form class="guestbook-form">
-            <label>Name <input type="text" placeholder="visitor"></label>
-            <label>Message <textarea placeholder="your note"></textarea></label>
-            <button type="button">Sign</button>
-          </form>
-        </article>
-        <aside class="box">
-          <h2>top notes</h2>
-          <p>notes I thought were extra special</p>
-        </aside>
+      <main class="box page-panel video-page">
+        <h1>Videos</h1>
+        <div class="youtube-player">
+          <iframe
+            src="https://www.youtube.com/embed/videoseries?list=UUi6ktpaPanNI49-wdJ0yzeg"
+            title="Pudgyfrog YouTube videos"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="origin"
+            allowfullscreen
+          ></iframe>
+        </div>
+        <a class="youtube-channel-link" href="https://www.youtube.com/@pudgyfrog-animations">
+          view channel on youtube
+        </a>
       </main>
       <footer class="site-footer"><p>follow @pudgyfr0g on instagram</p></footer>
     </div>

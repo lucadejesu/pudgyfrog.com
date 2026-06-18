@@ -21,20 +21,28 @@
         <a href="gallery.html">Animations</a>
         <a href="diary.html">Blog</a>
         <a href="thoughts.html" aria-current="page">Paintings</a>
-        <a href="guestbook.html">Guestbook</a>
+        <a href="videos.html">Videos</a>
         <a href="links.html">Links</a>
       </nav>
       <main class="box page-panel">
         <h1>Paintings</h1>
+        <p class="page-subheading">Hover over a painting to enlarge</p>
+        <figure class="painting-stage" data-painting-stage-frame tabindex="0" hidden>
+          <img
+            data-painting-stage
+            src="assets/images/paintings/sunset-landscape.jpeg"
+            alt="Painting preview"
+          >
+        </figure>
         <div class="painting-grid">
           <article>
-            <img src="assets/images/paintings/sunset-landscape.jpeg" alt="Colorful sunset landscape painting">
+            <img class="hover-painting" src="assets/images/paintings/sunset-landscape.jpeg" alt="Colorful sunset landscape painting">
           </article>
           <article>
-            <img src="assets/images/paintings/moon-cabin.jpeg" alt="Blue moonlit cabin painting">
+            <img class="hover-painting" src="assets/images/paintings/moon-cabin.jpeg" alt="Blue moonlit cabin painting">
           </article>
           <article>
-            <img src="assets/images/paintings/purple-harbor.jpeg" alt="Purple harbor night painting">
+            <img class="hover-painting" src="assets/images/paintings/purple-harbor.jpeg" alt="Purple harbor night painting">
           </article>
           <article aria-label="Painting placeholder"></article>
           <article aria-label="Painting placeholder"></article>
@@ -58,6 +66,6 @@
       </main>
       <footer class="site-footer"><p>follow @pudgyfr0g on instagram</p></footer>
     </div>
-    <script src="script.js?v=paintings-comments"></script>
+    <script src="script.js?v=painting-takeover"></script>
   </body>
 </html>

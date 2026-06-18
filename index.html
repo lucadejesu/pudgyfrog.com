@@ -22,7 +22,7 @@
         <a href="gallery.html">Animations</a>
         <a href="diary.html">Blog</a>
         <a href="thoughts.html">Paintings</a>
-        <a href="guestbook.html">Guestbook</a>
+        <a href="videos.html">Videos</a>
         <a href="links.html">Links</a>
         </nav>
 
@@ -49,22 +49,34 @@
                 aria-hidden="true"
               >
             </div>
-            <p class="weather-place" data-weather-place>near you</p>
-            <div class="weather-now">
-              <div class="weather-readout">
-                <p class="weather-label">now</p>
-                <p class="weather-temp">72&deg;</p>
-              </div>
-              <img
-                class="weather-icon"
-                data-weather-icon
-                data-condition="clear"
-                src="assets/images/weather/clear.png"
-                alt="Clear weather"
-              >
-            </div>
+            <p class="weather-place" data-weather-place>currently</p>
+            <img
+              class="weather-icon"
+              data-weather-icon
+              data-condition="clear"
+              src="assets/images/weather/clear.png"
+              alt="Clear weather"
+            >
             <p class="weather-note" data-weather-note>checking the sky...</p>
-            <p class="weather-wind">wind <span data-weather-wind>-- mph</span></p>
+            <p class="weather-temp">72&deg;</p>
+            <dl class="weather-details">
+              <div>
+                <dt>wind</dt>
+                <dd data-weather-wind>-- mph</dd>
+              </div>
+              <div>
+                <dt>chance of rain (next hr)</dt>
+                <dd data-weather-rain>--%</dd>
+              </div>
+              <div>
+                <dt>humidity</dt>
+                <dd data-weather-humidity>--%</dd>
+              </div>
+              <div>
+                <dt>uv index</dt>
+                <dd data-weather-uv>--</dd>
+              </div>
+            </dl>
           </section>
 
           <section class="box">
@@ -160,6 +172,6 @@
       </footer>
     </div>
 
-    <script src="script.js?v=dark-header-gif"></script>
+    <script src="script.js?v=weather-details"></script>
   </body>
 </html>
