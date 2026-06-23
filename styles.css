@@ -114,7 +114,8 @@ html[data-theme="light"] .site-shell {
 .masthead {
   position: relative;
   display: grid;
-  min-height: 138px;
+  min-height: 160px;
+  aspect-ratio: 11000 / 1600;
   place-items: center;
   align-content: center;
   gap: 0.55rem;
