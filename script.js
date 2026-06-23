@@ -232,6 +232,14 @@ function weatherFromObservation(description, isDay) {
     };
   }
 
+  if (observed === "cloudy") {
+    return {
+      condition: "cloudy-overcast",
+      label: description,
+      note: "cloudy",
+    };
+  }
+
   if (
     observed.includes("mostly cloudy") ||
     observed.includes("broken clouds")
@@ -289,7 +297,7 @@ async function loadWeather(latitude, longitude) {
   const temperature = Math.round(current.temperature_2m);
   const windSpeed = Math.round(current.wind_speed_10m);
   const humidity = Math.round(current.relative_humidity_2m);
-  const uvIndex = Number(current.uv_index).toFixed(1);
+  const uvIndex = Math.round(Number(current.uv_index));
   const cloudCover = Math.round(current.cloud_cover ?? 0);
   const precipitation = Number(current.precipitation ?? 0);
   const rainChance = Math.round(
