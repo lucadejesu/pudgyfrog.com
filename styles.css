@@ -163,7 +163,7 @@ html[data-theme="light"] .site-shell {
 
 html[data-theme="light"] .masthead {
   background-color: #fff;
-  background-image: url("assets/images/decor/light-mode-animation.gif");
+  background-image: url("assets/images/decor/light-mode-animation.gif?v=light-masthead-20260623");
   background-position: center bottom;
   background-size: 100% auto;
   background-repeat: no-repeat;
