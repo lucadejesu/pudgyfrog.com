@@ -188,32 +188,19 @@ html[data-theme="light"] .masthead .tagline {
   transform: translateY(-27px);
 }
 
-html[data-theme="dark"] .masthead,
-html[data-theme="dark"] .masthead::before {
+html[data-theme="dark"] .masthead {
   background-color: #000;
-  background-image: url("assets/images/decor/star-tile.png");
-  background-position: left top;
-  background-size: auto;
-  background-repeat: repeat;
+  background-image: url("assets/images/decor/dark-mode-cabin.gif?v=dark-masthead-20260623");
+  background-position: center bottom;
+  background-size: 100% auto;
+  background-repeat: no-repeat;
   opacity: 1;
 }
 
+html[data-theme="dark"] .masthead::before,
 html[data-theme="dark"] .masthead::after {
-  width: 48%;
-  background-color: #000;
-  background-image:
-    url("assets/images/decor/dark-mode-cabin.gif"),
-    url("assets/images/decor/star-tile.png");
-  background-position:
-    right 0 bottom -18px,
-    left top;
-  background-size:
-    contain,
-    auto;
-  background-repeat:
-    no-repeat,
-    repeat;
-  opacity: 1;
+  background-image: none;
+  opacity: 0;
 }
 
 .masthead.compact {
