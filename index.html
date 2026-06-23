@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>pudgyfrog</title>
     <meta name="description" content="The personal art website of Pudgy Frog.">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css?v=matched-dark-panels">
   </head>
   <body>
     <div class="stars" aria-hidden="true"></div>
@@ -55,6 +55,7 @@
               alt="Clear weather"
             >
             <p class="weather-note" data-weather-note>checking the sky...</p>
+            <p class="weather-alert" data-weather-alert role="status" hidden></p>
             <p class="weather-temp">72&deg;</p>
             <dl class="weather-details">
               <div>
@@ -117,17 +118,6 @@
                 <p>You can't have yesterday, how about tomorrow instead? In the meantime, enjoy today.</p>
               </section>
 
-              <section class="box chat-box">
-                <h2>Chat</h2>
-                <div class="chat-messages" aria-live="polite">
-                  <p>pudgyfrog: hello! chat is coming soon.</p>
-                </div>
-                <form class="chat-form">
-                  <label class="visually-hidden" for="chat-message">Message</label>
-                  <input id="chat-message" type="text" placeholder="type a message..." disabled>
-                  <button type="button" disabled>send</button>
-                </form>
-              </section>
             </div>
           </div>
 
@@ -149,7 +139,11 @@
               Animations
             </a>
             <a href="links.html">
-              <span class="empty-preview" aria-hidden="true"></span>
+              <span
+                class="empty-preview image-preview game-preview"
+                style="background-image: url('assets/images/header-left.png');"
+                aria-hidden="true"
+              ></span>
               Games
             </a>
           </div>
@@ -167,8 +161,16 @@
           </ul>
         </section>
 
-        <section class="box playlist">
-          <img src="assets/images/header-left.png" alt="Pixel art house with fence and lamps">
+        <section class="box chat-box lower-chat">
+          <h2>Chat</h2>
+          <div class="chat-messages" aria-live="polite">
+            <p>pudgyfrog: hello! chat is coming soon.</p>
+          </div>
+          <form class="chat-form">
+            <label class="visually-hidden" for="chat-message">Message</label>
+            <input id="chat-message" type="text" placeholder="type a message..." disabled>
+            <button type="button" disabled>send</button>
+          </form>
         </section>
       </main>
 
@@ -177,6 +179,6 @@
       </footer>
     </div>
 
-    <script src="script.js?v=weather-details"></script>
+    <script src="script.js?v=nws-observed-conditions"></script>
   </body>
 </html>

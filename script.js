@@ -8,6 +8,7 @@ const weatherRain = document.querySelector("[data-weather-rain]");
 const weatherHumidity = document.querySelector("[data-weather-humidity]");
 const weatherUv = document.querySelector("[data-weather-uv]");
 const weatherPlace = document.querySelector("[data-weather-place]");
+const weatherAlert = document.querySelector("[data-weather-alert]");
 const themeToggle = document.querySelector("[data-theme-toggle]");
 const themeLabel = document.querySelector("[data-theme-label]");
 const themeStorageKey = "pudgyfrog-theme";
@@ -77,8 +78,46 @@ function setWeatherIcon(condition, label) {
   weatherIcon.alt = label;
 }
 
+function weatherFromCloudCover(cloudCover, isDay) {
+  if (cloudCover >= 88) {
+    return {
+      condition: "cloudy-overcast",
+      label: "Overcast weather",
+      note: "overcast",
+    };
+  }
+
+  if (cloudCover >= 55) {
+    return {
+      condition: isDay ? "partly-cloudy" : "partly-cloudy-night",
+      label: "Mostly cloudy weather",
+      note: "mostly cloudy",
+    };
+  }
+
+  if (cloudCover >= 20) {
+    return {
+      condition: isDay ? "partly-cloudy" : "partly-cloudy-night",
+      label: "Partly cloudy weather",
+      note: "partly cloudy",
+    };
+  }
+
+  return {
+    condition: isDay ? "clear" : "cloudy-night",
+    label: isDay ? "Clear weather" : "Clear night weather",
+    note: "clear skies",
+  };
+}
+
 // turns the weather service numbers into the icons and words i use on the site
-function weatherFromCode(code, isDay, windSpeed) {
+function weatherFromCode(
+  code,
+  isDay,
+  windSpeed,
+  cloudCover = 0,
+  precipitation = 0,
+) {
   if (windSpeed >= 18) {
     return {
       condition: "windy-night",
@@ -88,19 +127,11 @@ function weatherFromCode(code, isDay, windSpeed) {
   }
 
   if (code === 0) {
-    return {
-      condition: isDay ? "clear" : "cloudy-night",
-      label: isDay ? "Clear weather" : "Clear night weather",
-      note: "clear skies",
-    };
+    return weatherFromCloudCover(cloudCover, isDay);
   }
 
   if ([1, 2].includes(code)) {
-    return {
-      condition: isDay ? "partly-cloudy" : "partly-cloudy-night",
-      label: "Partly cloudy weather",
-      note: "partly cloudy",
-    };
+    return weatherFromCloudCover(cloudCover, isDay);
   }
 
   if (code === 3) {
@@ -128,6 +159,10 @@ function weatherFromCode(code, isDay, windSpeed) {
   }
 
   if ([95].includes(code)) {
+    if (precipitation <= 0) {
+      return weatherFromCloudCover(cloudCover, isDay);
+    }
+
     return {
       condition: "isolated-thunderstorms",
       label: "Isolated thunderstorms",
@@ -136,6 +171,10 @@ function weatherFromCode(code, isDay, windSpeed) {
   }
 
   if ([96, 99].includes(code)) {
+    if (precipitation <= 0) {
+      return weatherFromCloudCover(cloudCover, isDay);
+    }
+
     return {
       condition: "strong-scattered-thunderstorms",
       label: "Strong thunderstorms",
@@ -150,12 +189,89 @@ function weatherFromCode(code, isDay, windSpeed) {
   };
 }
 
+function weatherFromObservation(description, isDay) {
+  const observed = description.toLowerCase();
+
+  if (observed.includes("thunder")) {
+    return {
+      condition: "isolated-thunderstorms",
+      label: description,
+      note: "isolated thunderstorms",
+    };
+  }
+
+  if (
+    observed.includes("rain") ||
+    observed.includes("shower") ||
+    observed.includes("drizzle")
+  ) {
+    return {
+      condition: "raining",
+      label: description,
+      note: "raining",
+    };
+  }
+
+  if (
+    observed.includes("fog") ||
+    observed.includes("mist") ||
+    observed.includes("haze")
+  ) {
+    return {
+      condition: isDay ? "fog-day" : "haze-night",
+      label: description,
+      note: observed.includes("fog") ? "fog" : "hazy",
+    };
+  }
+
+  if (observed.includes("overcast")) {
+    return {
+      condition: "cloudy-overcast",
+      label: description,
+      note: "overcast",
+    };
+  }
+
+  if (
+    observed.includes("mostly cloudy") ||
+    observed.includes("broken clouds")
+  ) {
+    return {
+      condition: isDay ? "partly-cloudy" : "partly-cloudy-night",
+      label: description,
+      note: "mostly cloudy",
+    };
+  }
+
+  if (
+    observed.includes("partly cloudy") ||
+    observed.includes("scattered clouds") ||
+    observed.includes("few clouds")
+  ) {
+    return {
+      condition: isDay ? "partly-cloudy" : "partly-cloudy-night",
+      label: description,
+      note: "partly cloudy",
+    };
+  }
+
+  if (observed.includes("clear") || observed.includes("fair")) {
+    return {
+      condition: isDay ? "clear" : "cloudy-night",
+      label: description,
+      note: "clear skies",
+    };
+  }
+
+  return null;
+}
+
 async function loadWeather(latitude, longitude) {
   const params = new URLSearchParams({
     latitude,
     longitude,
     current:
-      "temperature_2m,relative_humidity_2m,weather_code,is_day,wind_speed_10m,uv_index",
+      "temperature_2m,relative_humidity_2m,weather_code,is_day,wind_speed_10m,uv_index,cloud_cover,precipitation",
     hourly: "precipitation_probability",
     forecast_hours: "2",
     temperature_unit: "fahrenheit",
@@ -174,6 +290,8 @@ async function loadWeather(latitude, longitude) {
   const windSpeed = Math.round(current.wind_speed_10m);
   const humidity = Math.round(current.relative_humidity_2m);
   const uvIndex = Number(current.uv_index).toFixed(1);
+  const cloudCover = Math.round(current.cloud_cover ?? 0);
+  const precipitation = Number(current.precipitation ?? 0);
   const rainChance = Math.round(
     data.hourly?.precipitation_probability?.[1] ??
       data.hourly?.precipitation_probability?.[0] ??
@@ -183,6 +301,8 @@ async function loadWeather(latitude, longitude) {
     current.weather_code,
     current.is_day === 1,
     windSpeed,
+    cloudCover,
+    precipitation,
   );
 
   if (weatherTemp) weatherTemp.textContent = `${temperature}\u00b0`;
@@ -193,6 +313,121 @@ async function loadWeather(latitude, longitude) {
   if (weatherUv) weatherUv.textContent = uvIndex;
   if (weatherPlace) weatherPlace.textContent = "currently";
   setWeatherIcon(weather.condition, weather.label);
+
+  return {
+    isDay: current.is_day === 1,
+  };
+}
+
+async function loadObservedWeatherCondition(latitude, longitude, isDay) {
+  const point = `${latitude.toFixed(4)},${longitude.toFixed(4)}`;
+  const headers = {
+    Accept: "application/geo+json",
+  };
+  const pointResponse = await fetch(
+    `https://api.weather.gov/points/${encodeURIComponent(point)}`,
+    { headers },
+  );
+
+  if (!pointResponse.ok) return;
+
+  const pointData = await pointResponse.json();
+  const stationsUrl = pointData.properties?.observationStations;
+
+  if (!stationsUrl) return;
+
+  const stationsResponse = await fetch(stationsUrl, { headers });
+
+  if (!stationsResponse.ok) return;
+
+  const stationsData = await stationsResponse.json();
+  const nearestStation = stationsData.features?.[0]?.properties?.stationIdentifier;
+
+  if (!nearestStation) return;
+
+  const observationResponse = await fetch(
+    `https://api.weather.gov/stations/${encodeURIComponent(nearestStation)}/observations/latest`,
+    { headers },
+  );
+
+  if (!observationResponse.ok) return;
+
+  const observationData = await observationResponse.json();
+  const description = observationData.properties?.textDescription?.trim();
+  const timestamp = Date.parse(observationData.properties?.timestamp);
+  const observationAge = Date.now() - timestamp;
+
+  if (
+    !description ||
+    !Number.isFinite(timestamp) ||
+    observationAge > 1000 * 60 * 120
+  ) {
+    return;
+  }
+
+  const observedWeather = weatherFromObservation(description, isDay);
+
+  if (!observedWeather) return;
+
+  if (weatherNote) weatherNote.textContent = observedWeather.note;
+  setWeatherIcon(observedWeather.condition, observedWeather.label);
+}
+
+function hideWeatherAlert() {
+  if (!weatherAlert) return;
+
+  weatherAlert.hidden = true;
+  weatherAlert.textContent = "";
+  weatherAlert.removeAttribute("title");
+}
+
+async function loadWeatherAlerts(latitude, longitude) {
+  if (!weatherAlert) return;
+
+  const point = `${latitude.toFixed(4)},${longitude.toFixed(4)}`;
+  const response = await fetch(
+    `https://api.weather.gov/alerts/active?point=${encodeURIComponent(point)}`,
+    {
+      headers: {
+        Accept: "application/geo+json",
+      },
+    },
+  );
+
+  if (!response.ok) {
+    hideWeatherAlert();
+    return;
+  }
+
+  const data = await response.json();
+  const severityOrder = {
+    Extreme: 4,
+    Severe: 3,
+    Moderate: 2,
+    Minor: 1,
+    Unknown: 0,
+  };
+  const alerts = (data.features || [])
+    .map((feature) => feature.properties)
+    .filter((alert) => alert?.event)
+    .sort(
+      (first, second) =>
+        (severityOrder[second.severity] || 0) -
+        (severityOrder[first.severity] || 0),
+    );
+
+  if (!alerts.length) {
+    hideWeatherAlert();
+    return;
+  }
+
+  const primaryAlert = alerts[0];
+  const extraAlertCount = alerts.length - 1;
+  weatherAlert.textContent = extraAlertCount
+    ? `${primaryAlert.event} +${extraAlertCount}`
+    : primaryAlert.event;
+  weatherAlert.title = primaryAlert.headline || primaryAlert.event;
+  weatherAlert.hidden = false;
 }
 
 function useFallbackWeather(message) {
@@ -219,12 +454,20 @@ function initWeather() {
   navigator.geolocation.getCurrentPosition(
     (position) => {
       const { latitude, longitude } = position.coords;
-      loadWeather(latitude, longitude).catch(() => {
-        useFallbackWeather("weather is unavailable");
-      });
+      loadWeather(latitude, longitude)
+        .then(({ isDay }) => {
+          loadObservedWeatherCondition(latitude, longitude, isDay).catch(
+            () => {},
+          );
+        })
+        .catch(() => {
+          useFallbackWeather("weather is unavailable");
+        });
+      loadWeatherAlerts(latitude, longitude).catch(hideWeatherAlert);
     },
     () => {
       useFallbackWeather("allow location for local weather");
+      hideWeatherAlert();
     },
     {
       enableHighAccuracy: false,
