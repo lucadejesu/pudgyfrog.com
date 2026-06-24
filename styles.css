@@ -1409,6 +1409,19 @@ html[data-theme="dark"] .link-grid a:focus-visible {
     margin-top: 0;
   }
 
+  .masthead {
+    min-height: 160px;
+    aspect-ratio: 3900 / 1600;
+  }
+
+  html[data-theme="light"] .masthead {
+    background-image: url("assets/images/decor/light-mode-animation-mobile.gif?v=mobile-masthead-20260624");
+  }
+
+  html[data-theme="dark"] .masthead {
+    background-image: url("assets/images/decor/dark-mode-cabin-mobile.gif?v=mobile-masthead-20260624");
+  }
+
   .layout,
   .page-grid,
   .moon-photo-box {
