@@ -1320,6 +1320,11 @@ html[data-theme="dark"] .comment-entry header {
   image-rendering: pixelated;
 }
 
+.animation-stage img[hidden],
+.animation-stage video[hidden] {
+  display: none;
+}
+
 .animation-stage video {
   background: #000;
 }
