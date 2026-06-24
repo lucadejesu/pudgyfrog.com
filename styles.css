@@ -178,17 +178,6 @@ html[data-theme="light"] .masthead::after {
   opacity: 0;
 }
 
-html[data-theme="light"] .masthead .brand {
-  transform: translateY(-18px);
-}
-
-html[data-theme="light"] .masthead .tagline {
-  margin-top: 0;
-  padding: 0;
-  background: transparent;
-  transform: translateY(-27px);
-}
-
 html[data-theme="dark"] .masthead {
   background-color: #000;
   background-image: url("assets/images/decor/dark-mode-cabin.gif?v=dark-masthead-20260623");
@@ -230,6 +219,7 @@ html[data-theme="dark"] .masthead::after {
 .brand-logo {
   width: min(58vw, 540px);
   max-width: calc(100% - 2rem);
+  transform: translateY(8px);
 }
 
 .brand-logo img {
