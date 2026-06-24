@@ -215,6 +215,9 @@ html[data-theme="dark"] .masthead::after {
 .brand {
   position: relative;
   z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   color: var(--brand-color);
   font-family: var(--font-display);
   font-size: clamp(2.45rem, 7vw, 4.4rem);
@@ -222,6 +225,18 @@ html[data-theme="dark"] .masthead::after {
   line-height: 1.05;
   text-decoration: none;
   text-shadow: none;
+}
+
+.brand-logo {
+  width: min(58vw, 540px);
+  max-width: calc(100% - 2rem);
+}
+
+.brand-logo img {
+  display: block;
+  width: 100%;
+  height: auto;
+  image-rendering: pixelated;
 }
 
 .compact .brand {
