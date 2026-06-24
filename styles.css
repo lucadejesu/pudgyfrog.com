@@ -1311,12 +1311,17 @@ html[data-theme="dark"] .comment-entry header {
   display: none;
 }
 
-.animation-stage img {
+.animation-stage img,
+.animation-stage video {
   display: block;
   width: 100%;
   aspect-ratio: 16 / 9;
   object-fit: cover;
   image-rendering: pixelated;
+}
+
+.animation-stage video {
+  background: #000;
 }
 
 .animation-stage img.animation-stage-contained {
@@ -1335,18 +1340,21 @@ html[data-theme="dark"] .comment-entry header {
     var(--panel);
 }
 
-.animation-grid img {
+.animation-grid img,
+.animation-grid video {
   aspect-ratio: 16 / 9;
   height: 100%;
   object-fit: cover;
   image-rendering: pixelated;
 }
 
-.hover-gif {
+.hover-gif,
+.hover-video {
   cursor: pointer;
 }
 
-.hover-gif:focus-visible {
+.hover-gif:focus-visible,
+.hover-video:focus-visible {
   outline: 3px solid var(--blue);
   outline-offset: 4px;
 }

@@ -525,7 +525,9 @@ function initYoutubePlayer() {
 initYoutubePlayer();
 
 const hoverGifs = document.querySelectorAll("[data-gif-src][data-still-src]");
+const hoverVideos = document.querySelectorAll("[data-video-src]");
 const animationStage = document.querySelector("[data-animation-stage]");
+const animationVideoStage = document.querySelector("[data-animation-video-stage]");
 const animationStageFrame = document.querySelector("[data-animation-stage-frame]");
 const animationGrid = document.querySelector(".animation-grid");
 
@@ -533,6 +535,15 @@ const animationGrid = document.querySelector(".animation-grid");
 function showAnimationStage(image) {
   if (!animationStage || !animationStageFrame || !animationGrid) return;
 
+  if (animationVideoStage) {
+    animationVideoStage.pause();
+    animationVideoStage.hidden = true;
+    animationVideoStage.removeAttribute("src");
+    animationVideoStage.removeAttribute("poster");
+    animationVideoStage.load();
+  }
+
+  animationStage.hidden = false;
   animationStage.src = image.dataset.gifSrc;
   animationStage.alt = image.alt;
   animationStage.classList.toggle(
@@ -543,8 +554,31 @@ function showAnimationStage(image) {
   animationStageFrame.hidden = false;
 }
 
+function showVideoStage(videoThumb) {
+  if (!animationVideoStage || !animationStageFrame || !animationGrid) return;
+
+  if (animationStage) {
+    animationStage.hidden = true;
+    animationStage.src = videoThumb.dataset.posterSrc || videoThumb.src;
+  }
+
+  animationVideoStage.src = videoThumb.dataset.videoSrc;
+  animationVideoStage.poster = videoThumb.dataset.posterSrc || videoThumb.src;
+  animationVideoStage.hidden = false;
+  animationVideoStage.load();
+  animationGrid.hidden = true;
+  animationStageFrame.hidden = false;
+}
+
 function hideAnimationStage() {
   if (!animationStageFrame || !animationGrid) return;
+
+  if (animationVideoStage) {
+    animationVideoStage.pause();
+    animationVideoStage.hidden = true;
+    animationVideoStage.removeAttribute("src");
+    animationVideoStage.load();
+  }
 
   animationStageFrame.hidden = true;
   animationGrid.hidden = false;
@@ -578,11 +612,23 @@ hoverGifs.forEach((image) => {
   image.addEventListener("blur", pauseGif);
 });
 
+hoverVideos.forEach((videoThumb) => {
+  videoThumb.tabIndex = 0;
+  videoThumb.addEventListener("mouseenter", () => showVideoStage(videoThumb));
+  videoThumb.addEventListener("pointerenter", () => showVideoStage(videoThumb));
+  videoThumb.addEventListener("focus", () => showVideoStage(videoThumb));
+  videoThumb.addEventListener("click", () => showVideoStage(videoThumb));
+});
+
 if (animationStageFrame) {
   animationStageFrame.addEventListener("mouseleave", hideAnimationStage);
   animationStageFrame.addEventListener("pointerleave", hideAnimationStage);
   animationStageFrame.addEventListener("blur", hideAnimationStage);
-  animationStageFrame.addEventListener("click", hideAnimationStage);
+  animationStageFrame.addEventListener("click", (event) => {
+    if (event.target === animationStageFrame || event.target === animationStage) {
+      hideAnimationStage();
+    }
+  });
 }
 
 const hoverPaintings = document.querySelectorAll(".hover-painting");
