@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>pudgyfrog</title>
     <meta name="description" content="The personal art website of Pudgy Frog.">
-    <link rel="stylesheet" href="styles.css?v=lowered-animated-logo">
+    <link rel="stylesheet" href="styles.css?v=mobile-animation-stability">
   </head>
   <body>
     <div class="stars" aria-hidden="true"></div>
@@ -13,7 +13,10 @@
     <div class="site-shell">
       <header class="masthead">
         <a class="brand brand-logo" href="index.html">
-          <img src="assets/images/decor/pudgy-logo-desktop.gif?v=logo-animation-20260625" alt="pudgyfrog">
+          <picture>
+            <source media="(max-width: 860px)" srcset="assets/images/decor/pudgy-logo-mobile.png?v=mobile-logo-20260625">
+            <img src="assets/images/decor/pudgy-logo-desktop.gif?v=logo-animation-20260625" alt="pudgyfrog">
+          </picture>
         </a>
       </header>
 

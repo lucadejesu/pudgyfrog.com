@@ -229,6 +229,11 @@ html[data-theme="dark"] .masthead::after {
   image-rendering: pixelated;
 }
 
+.brand-logo picture {
+  display: block;
+  width: 100%;
+}
+
 .compact .brand {
   font-size: clamp(2rem, 5.5vw, 3.4rem);
 }
