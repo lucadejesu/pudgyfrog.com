@@ -1047,6 +1047,16 @@ html[data-theme="light"] .site-footer {
   overflow: hidden;
 }
 
+.sanctuary-placeholder {
+  width: calc(100% - 2.3rem);
+  margin: 1.15rem;
+  aspect-ratio: 16 / 9;
+  border: 2px solid var(--line);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(0, 0, 0, 0.18)),
+    var(--panel);
+}
+
 .youtube-player iframe {
   position: relative;
   z-index: 2;
