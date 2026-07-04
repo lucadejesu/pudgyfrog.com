@@ -40,17 +40,21 @@ if (themeToggle) {
 const weatherIcons = {
   "partly-cloudy": "assets/images/weather/partly-cloudy.png",
   "strong-scattered-thunderstorms": "assets/images/weather/strong-scattered-thunderstorms.png",
+  "heavy-thunderstorms": "assets/images/weather/heavy-thunderstorms.png",
   "fog-day": "assets/images/weather/fog-day.png",
   "cloudy-night": "assets/images/weather/cloudy-night.png",
+  "windy-day": "assets/images/weather/windy-day.png",
   "windy-night": "assets/images/weather/windy-night.png",
   "haze-night": "assets/images/weather/haze-night.png",
   "cloudy-overcast": "assets/images/weather/cloudy-overcast.png",
   "partly-cloudy-night": "assets/images/weather/partly-cloudy-night.png",
+  "hot-partly-cloudy": "assets/images/weather/hot-partly-cloudy.png",
   sunny: "assets/images/weather/sunny.png",
   raining: "assets/images/weather/raining.png",
   thunderstorms: "assets/images/weather/thunderstorms.png",
   "isolated-thunderstorms": "assets/images/weather/isolated-thunderstorms.png",
   clear: "assets/images/weather/clear.png",
+  "clear-night": "assets/images/weather/clear-night.png",
 };
 
 if (year) {
@@ -78,7 +82,7 @@ function setWeatherIcon(condition, label) {
   weatherIcon.alt = label;
 }
 
-function weatherFromCloudCover(cloudCover, isDay) {
+function weatherFromCloudCover(cloudCover, isDay, temperature = null) {
   if (cloudCover >= 88) {
     return {
       condition: "cloudy-overcast",
@@ -96,6 +100,14 @@ function weatherFromCloudCover(cloudCover, isDay) {
   }
 
   if (cloudCover >= 20) {
+    if (isDay && temperature > 90) {
+      return {
+        condition: "hot-partly-cloudy",
+        label: "Hot partly cloudy weather",
+        note: "hot and partly cloudy",
+      };
+    }
+
     return {
       condition: isDay ? "partly-cloudy" : "partly-cloudy-night",
       label: "Partly cloudy weather",
@@ -104,9 +116,9 @@ function weatherFromCloudCover(cloudCover, isDay) {
   }
 
   return {
-    condition: isDay ? "clear" : "cloudy-night",
+    condition: isDay ? "clear" : "clear-night",
     label: isDay ? "Clear weather" : "Clear night weather",
-    note: "clear skies",
+    note: "clear",
   };
 }
 
@@ -117,21 +129,34 @@ function weatherFromCode(
   windSpeed,
   cloudCover = 0,
   precipitation = 0,
+  temperature = null,
 ) {
-  if (windSpeed >= 18) {
+  if ([96, 99].includes(code)) {
+    if (precipitation <= 0) {
+      return weatherFromCloudCover(cloudCover, isDay, temperature);
+    }
+
     return {
-      condition: "windy-night",
+      condition: "heavy-thunderstorms",
+      label: "Heavy thunderstorms",
+      note: "heavy thunderstorms",
+    };
+  }
+
+  if (windSpeed > 20) {
+    return {
+      condition: isDay ? "windy-day" : "windy-night",
       label: "Windy weather",
       note: "windy",
     };
   }
 
   if (code === 0) {
-    return weatherFromCloudCover(cloudCover, isDay);
+    return weatherFromCloudCover(cloudCover, isDay, temperature);
   }
 
   if ([1, 2].includes(code)) {
-    return weatherFromCloudCover(cloudCover, isDay);
+    return weatherFromCloudCover(cloudCover, isDay, temperature);
   }
 
   if (code === 3) {
@@ -160,25 +185,13 @@ function weatherFromCode(
 
   if ([95].includes(code)) {
     if (precipitation <= 0) {
-      return weatherFromCloudCover(cloudCover, isDay);
+      return weatherFromCloudCover(cloudCover, isDay, temperature);
     }
 
     return {
       condition: "isolated-thunderstorms",
       label: "Isolated thunderstorms",
       note: "isolated thunderstorms",
-    };
-  }
-
-  if ([96, 99].includes(code)) {
-    if (precipitation <= 0) {
-      return weatherFromCloudCover(cloudCover, isDay);
-    }
-
-    return {
-      condition: "strong-scattered-thunderstorms",
-      label: "Strong thunderstorms",
-      note: "strong scattered thunderstorms",
     };
   }
 
@@ -193,6 +206,18 @@ function weatherFromObservation(description, isDay) {
   const observed = description.toLowerCase();
 
   if (observed.includes("thunder")) {
+    if (
+      observed.includes("heavy") ||
+      observed.includes("severe") ||
+      observed.includes("strong")
+    ) {
+      return {
+        condition: "heavy-thunderstorms",
+        label: description,
+        note: "heavy thunderstorms",
+      };
+    }
+
     return {
       condition: "isolated-thunderstorms",
       label: description,
@@ -265,9 +290,9 @@ function weatherFromObservation(description, isDay) {
 
   if (observed.includes("clear") || observed.includes("fair")) {
     return {
-      condition: isDay ? "clear" : "cloudy-night",
+      condition: isDay ? "clear" : "clear-night",
       label: description,
-      note: "clear skies",
+      note: "clear",
     };
   }
 
@@ -311,6 +336,7 @@ async function loadWeather(latitude, longitude) {
     windSpeed,
     cloudCover,
     precipitation,
+    temperature,
   );
 
   if (weatherTemp) weatherTemp.textContent = `${temperature}\u00b0`;
@@ -376,6 +402,12 @@ async function loadObservedWeatherCondition(latitude, longitude, isDay) {
   const observedWeather = weatherFromObservation(description, isDay);
 
   if (!observedWeather) return;
+  if (
+    ["heavy-thunderstorms", "hot-partly-cloudy", "windy-day", "windy-night"]
+      .includes(weatherIcon?.dataset.condition)
+  ) {
+    return;
+  }
 
   if (weatherNote) weatherNote.textContent = observedWeather.note;
   setWeatherIcon(observedWeather.condition, observedWeather.label);
@@ -430,12 +462,20 @@ async function loadWeatherAlerts(latitude, longitude) {
   }
 
   const primaryAlert = alerts[0];
+  const severeThunderstormAlert =
+    (severityOrder[primaryAlert.severity] || 0) >= severityOrder.Severe &&
+    /thunderstorm/i.test(`${primaryAlert.event} ${primaryAlert.headline || ""}`);
   const extraAlertCount = alerts.length - 1;
   weatherAlert.textContent = extraAlertCount
     ? `${primaryAlert.event} +${extraAlertCount}`
     : primaryAlert.event;
   weatherAlert.title = primaryAlert.headline || primaryAlert.event;
   weatherAlert.hidden = false;
+
+  if (severeThunderstormAlert) {
+    if (weatherNote) weatherNote.textContent = "heavy thunderstorms";
+    setWeatherIcon("heavy-thunderstorms", primaryAlert.event);
+  }
 }
 
 function useFallbackWeather(message) {
@@ -463,15 +503,15 @@ function initWeather() {
     (position) => {
       const { latitude, longitude } = position.coords;
       loadWeather(latitude, longitude)
-        .then(({ isDay }) => {
-          loadObservedWeatherCondition(latitude, longitude, isDay).catch(
+        .then(async ({ isDay }) => {
+          await loadObservedWeatherCondition(latitude, longitude, isDay).catch(
             () => {},
           );
+          await loadWeatherAlerts(latitude, longitude).catch(hideWeatherAlert);
         })
         .catch(() => {
           useFallbackWeather("weather is unavailable");
         });
-      loadWeatherAlerts(latitude, longitude).catch(hideWeatherAlert);
     },
     () => {
       useFallbackWeather("allow location for local weather");
